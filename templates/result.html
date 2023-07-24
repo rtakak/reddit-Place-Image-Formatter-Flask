@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Preview</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Press+Start+2P">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
+    <style>
+
+        /* For mobile phones: */
+        @media only screen and (max-width: 600px) {
+            #sh {
+                font-size: 20px;
+                text-shadow: 2px 2px 0px black;
+            }
+            .zoom {
+                max-width: 90vw;
+                max-height: 45vh;
+            }
+            .download-link {
+                font-size: 18px;
+            }
+            .donate-button {
+                font-size: 8px;
+            }
+            .developer-tag {
+                font-size: 12px;
+            }
+            .fa {
+                font-size: 40px;
+            }
+        }
+
+        /* For tablets: */
+        @media only screen and (min-width: 601px) and (max-width: 1024px) {
+            #sh {
+                font-size: 25px;
+                text-shadow: 3px 3px 0px black;
+            }
+            .zoom {
+                max-width: 85vw;
+                max-height: 50vh;
+            }
+            .download-link {
+                font-size: 20px;
+            }
+            .donate-button {
+                font-size: 9px;
+            }
+            .developer-tag {
+                font-size: 14px;
+            }
+            .fa {
+                font-size: 45px;
+            }
+        }
+        
+        #sh {
+            font-size: 30px;
+            text-shadow: 4px 4px 0px black;
+        }
+        .zoom {
+            transition: transform .2s;
+            max-width: 80vw;
+            max-height: 60vh;
+            margin: 2vh auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+        }
+        .zoom:hover {
+            transform: scale(1.5);
+        }
+        .download-link {
+            font-size: 22px;
+        }
+
+        .donate-button {
+            font-size: 10px;
+        }
+        .download-link, .donate-button {
+            display: block;
+            text-align: center;
+            margin: 20px auto;
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: 2px solid white;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.8);
+            text-transform: uppercase;
+            transition: all .5s ease;
+            font-family: 'Press Start 2P', monospace;
+        }
+        .download-link:hover, .donate-button:hover {
+            color: #001F3F;
+            background-color: #fff;
+        }
+        .bottom-right {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;  /* Center items vertically */
+            gap: 10px;
+        }
+        .developer-tag {
+            background-color: black;
+            color: white;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 2px solid white;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-size: cover;
+            /* Position the background image to center */
+            background-position: center;
+            background-image: url("{{ bg_image_url }}");
+            /* Add a linear-gradient overlay */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("{{ bg_image_url }}");
+            height: 100vh;
+            margin: 0;
+            color: white;
+            font-family: 'Press Start 2P', monospace;
+        }
+        .social-icons {
+            display: flex;
+            justify-content: center;  /* Center items horizontally */
+            gap: 10px;
+            padding-top: 20px;
+        }
+        
+        .social-icons a {
+            border: 1px solid white;
+            color: white;
+            text-decoration: none;
+            background-color: rgba(0, 0, 0, 1);  /* 70% black opacity background */
+            padding: 10px;  /* Add some padding around the icons */
+            border-radius: 5px;  /* Optional: round the corners of the background */
+        }
+        .fa {  /* FontAwesome icons class */
+            font-size: 50px;  /* Make the icons bigger. Adjust this value as needed */
+        }
+        .social-icons a:hover {
+            color: #008CBA;
+        }
+    </style>
+</head>
+<body>
+    <h2  id="sh">r/Place Ready Image</h2>
+    <img class="zoom" src="{{ image_url }}" alt="Processed image">
+    <a class="download-link" href="{{ image_url }}" download>Click to Download!</a>
+    <!-- Insert the PayPal donation button code here -->
+    <form action="https://www.paypal.com/donate" method="post" target="_top">
+        <input type="hidden" name="hosted_button_id" value="YOUR_BUTTON_ID_HERE" />
+        <input type="submit" class="donate-button" title="PayPal - The safer, easier way to pay online!" value="Donate with PayPal" />
+        <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+    </form>
+    <div class="bottom-right">
+        <div class="social-icons">
+            <a href="https://www.reddit.com/user/rtakak" target="_blank"><i class="fab fa-reddit"></i></a>
+            <a href="https://discordapp.com/users/rtakak" target="_blank"><i class="fab fa-discord"></i></a>
+            <a href="https://github.com/rtakak" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/rtakak/" target="_blank"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <div class="developer-tag">Developed by @rtakak</div>
+    </div>
+</body>
+</html>

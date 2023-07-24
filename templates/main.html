@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        let uploadButton = document.getElementById("upload-button");
+        let chosenImage = document.getElementById("chosen-image");
+        let fileName = document.getElementById("file-name");
+        let container = document.querySelector(".container");
+        let error = document.getElementById("error");
+        let imageDisplay = document.getElementById("image-display");
+
+        const fileHandler = (file, name, type) => {
+        if (type.split("/")[0] !== "image") {
+            //File Type Error
+            error.innerText = "Please upload an image file";
+            return false;
+        }
+        error.innerText = "";
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+            //image and file name
+            let imageContainer = document.createElement("figure");
+            let img = document.createElement("img");
+            img.src = reader.result;
+            imageContainer.appendChild(img);
+            imageContainer.innerHTML += `<figcaption>${name}</figcaption>`;
+            imageDisplay.appendChild(imageContainer);
+        };
+        };
+
+        //Upload Button
+        uploadButton.addEventListener("change", () => {
+        imageDisplay.innerHTML = "";
+        Array.from(uploadButton.files).forEach((file) => {
+            fileHandler(file, file.name, file.type);
+        });
+        });
+
+        container.addEventListener(
+        "dragenter",
+        (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            container.classList.add("active");
+        },
+        false
+        );
+
+        container.addEventListener(
+        "dragleave",
+        (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            container.classList.remove("active");
+        },
+        false
+        );
+
+        container.addEventListener(
+        "dragover",
+        (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            container.classList.add("active");
+        },
+        false
+        );
+
+        container.addEventListener(
+        "drop",
+        (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            container.classList.remove("active");
+            let draggedData = e.dataTransfer;
+            let files = draggedData.files;
+            imageDisplay.innerHTML = "";
+            Array.from(files).forEach((file) => {
+            fileHandler(file, file.name, file.type);
+            });
+        },
+        false
+        );
+
+        window.onload = () => {
+        error.innerText = "";
+        };
+    </script> 
+    <title>Upload Image</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Press+Start+2P">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
+    <style>
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+        }
+        /* For mobile phones: */
+        @media only screen and (max-width: 600px) {
+            #sh {
+                font-size: 20px;
+                text-shadow: 2px 2px 0px black;
+            }
+            .file-upload-container {
+                width: 100%;
+            }
+            .file-upload-container label {
+                width: 100%;
+                font-size: 1em;
+            }
+            .file-upload-container #image-display figure {
+                width: 100%;
+            }
+            .fa {
+                font-size: 40px;
+            }
+        }
+
+        /* For tablets: */
+        @media only screen and (min-width: 601px) and (max-width: 1024px) {
+            #sh {
+                font-size: 25px;
+                text-shadow: 3px 3px 0px black;
+            }
+            .file-upload-container {
+                width: 80%;
+            }
+            .file-upload-container label {
+                font-size: 1.2em;
+            }
+            .file-upload-container #image-display figure {
+                width: 90%;
+            }
+            .fa {
+                font-size: 45px;
+            }
+        }
+
+        #sh {
+            text-shadow: 4px 4px 0px black;
+        }
+        #wdin {
+            background-color:rgba(255,255,255,.07);
+            color:white;
+            border: none;
+            outline:none;
+            height:1em;
+            margin-right: auto;
+            margin-left: auto;
+            text-align: center;
+            padding: 10px;
+            outline: none;
+            border-radius: 4px;
+            transition: all .5s ease;
+            border: 2px solid white;
+            font-family: 'Press Start 2P', monospace;
+        }
+        #wdin:hover {
+            background-color: rgba(255,255,255,.2);
+        }
+
+        .file-upload-container {
+            background-color: transparent;
+            width: 90%;
+            min-width: 15em;
+            border-radius: 0.5em;
+          }
+          
+          .file-upload-container input[type="file"] {
+            display: none;
+          }
+          
+          .file-upload-container label {
+            display: block;
+            position: relative;
+            background-color: transparent;
+            color: #ffffff;
+            font-size: 1.1em;
+            text-align: center;
+            width: 16em;
+            padding: 1em 0;
+            border-radius: 0.3em;
+            margin: 0 auto 1em auto;
+            cursor: pointer;
+          }
+          
+          .file-upload-container #image-display {
+            position: relative;
+            width: 90%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-evenly;
+            gap: 1.25em;
+            flex-wrap: wrap;
+          }
+          
+          .file-upload-container #image-display figure {
+            width: 45%;
+          }
+          
+          .file-upload-container #image-display img {
+            width: 100%;
+          }
+          
+          .file-upload-container #image-display figcaption {
+            font-size: 0.8em;
+            text-align: center;
+            color: #5a5861;
+          }
+          
+          .file-upload-container.active {
+            border: 0.2em dashed #025bee;
+          }
+          
+          .file-upload-container #error {
+            text-align: center;
+            color: #ff3030;
+          }          
+        input[type="file"], input[type="submit"] {
+            transition: all .5s ease;
+            color: #fff;
+            border: 3px solid white;
+            font-family: 'Press Start 2P', monospace;
+            text-transform: uppercase;
+            text-align: center;
+            line-height: 1;
+            font-size: 17px;
+            background-color: transparent;
+            padding: 10px;
+            outline: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        
+        input[type="file"]:hover, input[type="submit"]:hover {
+            color: #001F3F;
+            background-color: #fff;
+        }
+        
+        
+        .bottom-right {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;  /* Center items vertically */
+            gap: 10px;
+        }
+        
+        
+        .developer-tag {
+            background-color: black;
+            color: white;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 10px;
+            border: 2px solid white;
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-size: cover;
+            /* Position the background image to center */
+            background-position: center;
+            background-image: url("{{ bg_image_url }}");
+            /* Add a linear-gradient overlay */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("{{ bg_image_url }}");
+            height: 100vh;
+            margin: 0;
+            color: white;
+            font-family: 'Press Start 2P', monospace;
+        }
+        h2 {
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px #000000;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            border: 3px solid white;
+            font-family: 'Press Start 2P', monospace;
+        }
+        input[type="file"] {
+            color: white;
+            padding: 5px;
+            border-radius: 10px;
+        }
+        input[type="submit"] {
+            border: 2px solid white;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;    
+            cursor: pointer;
+            border-radius: 10px;
+        }
+        .social-icons {
+            display: flex;
+            justify-content: center;  /* Center items horizontally */
+            gap: 10px;
+            padding-top: 20px;
+        }
+        
+        .social-icons a {
+            border: 1px solid white;
+            color: white;
+            text-decoration: none;
+            background-color: rgba(0, 0, 0, 1);  /* 70% black opacity background */
+            padding: 10px;  /* Add some padding around the icons */
+            border-radius: 5px;  /* Optional: round the corners of the background */
+        }
+        .fa {  /* FontAwesome icons class */
+            font-size: 50px;  /* Make the icons bigger. Adjust this value as needed */
+        }
+        .social-icons a:hover {
+            color: #008CBA;
+        }
+    </style>
+</head>
+<body>
+    <h2 id="sh">r/Place Image Formatter</h2>
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <div class="file-upload-container">
+            <input type="file" id="upload-button" name="file" required/>
+            <label for="upload-button">Choose Or Drop Photos</label>
+            <div id="error"></div>
+            <div id="image-display"></div>
+        </div>
+        <div text-align:center >
+        <label for="width">Desired Width px: </label>
+        <input title="Sets the width of output in pixels." type="number" id="wdin" name="wdin" min="1" max="256" required/>
+        </div>
+        <input type="submit" value="Submit"/>
+    </form>     
+    <div class="bottom-right">
+        <div class="social-icons">
+            <a href="https://www.reddit.com/user/rtakak" target="_blank"><i class="fab fa-reddit"></i></a>
+            <a href="https://discordapp.com/users/rtakak" target="_blank"><i class="fab fa-discord"></i></a>
+            <a href="https://github.com/rtakak" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/rtakak/" target="_blank"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <div class="developer-tag">Developed by @rtakak</div>
+    </div>
+</body>
+</html>
