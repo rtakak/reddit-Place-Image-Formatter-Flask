@@ -7,6 +7,7 @@ import time
 from math import sqrt
 from os import makedirs
 from sklearn.cluster import KMeans
+from colour import delta_E
 
 
 def color_clustering(idx, img, k):
@@ -108,7 +109,7 @@ def match_colors_w_palette(encountered_colors_list, palette, DEBUG, color_space=
     recoloring = []
     encountered_color_bgr = np.zeros((1, 1, 3), dtype=np.uint8)
     palette_color_bgr = np.zeros((1, 1, 3), dtype=np.uint8)
-    np.set_printoptions(precision=1)
+    np.set_printoptions(precision=4)
 
     for encountered_color in encountered_colors_list:
         comparison = []
@@ -122,9 +123,7 @@ def match_colors_w_palette(encountered_colors_list, palette, DEBUG, color_space=
                 encountered_color_lab = cv2.cvtColor(
                     encountered_color_bgr.astype(np.float32) / 255, cv2.COLOR_BGR2Lab
                 )
-                l1, a1, b1 = encountered_color_lab[0][0]
-                l2, a2, b2 = palette_color_lab[0][0]
-                diff = sqrt((l2 - l1) ** 2 + (a2 - a1) ** 2 + (b2 - b1) ** 2)
+                diff = delta_E(encountered_color_lab[0][0], palette_color_lab[0][0])
             elif color_space == "HSV":
                 palette_color_lab = cv2.cvtColor(
                     palette_color_bgr.astype(np.float32) / 255, cv2.COLOR_BGR2HSV
@@ -132,9 +131,7 @@ def match_colors_w_palette(encountered_colors_list, palette, DEBUG, color_space=
                 encountered_color_lab = cv2.cvtColor(
                     encountered_color_bgr.astype(np.float32) / 255, cv2.COLOR_BGR2HSV
                 )
-                h1, s1, v1 = encountered_color_lab[0][0]
-                h2, s2, v2 = palette_color_lab[0][0]
-                diff = sqrt((h2 - h1) ** 2 + (s2 - s1) ** 2 + (v2 - v1) ** 2)
+                diff = delta_E(encountered_color_lab[0][0], palette_color_lab[0][0])
             else:
                 raise ValueError
             if DEBUG:
@@ -404,12 +401,16 @@ def upload():
 
         og_img_path = os.path.join(app.config['UPLOAD_FOLDER'], direct[0], secure_filename(f.filename))
         print(og_img_path)
+        try:
+            makedirs(os.path.join(app.config['UPLOAD_FOLDER'], direct[0]))
+        except:
+            print("Directory already exists.")
         f.save(og_img_path)
         #flash('File uploaded!', 'success')
         
         # Process the image and handle any exceptions
         try:
-            output = place(os.path.join(f"D:\Desktop\Projects\place-website\Outputs\{direct[0]}", secure_filename(f.filename)), width)
+            output = place(og_img_path, width)
         except Exception as e:
             return f"Error: An error occurred while processing the image: {str(e)}"
         
@@ -436,4 +437,4 @@ def upload():
         return render_template('result.html', image_url=image_url, bg_image_url=bg_image_url)
 
 if __name__ == '__main__':
-   app.run(debug = True)
+   app.run(host='0.0.0.0' , port=5000)
