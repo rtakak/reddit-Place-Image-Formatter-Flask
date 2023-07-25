@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'place-formatter'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8DF241B7892B4EEDA6894F7593A90F6E }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B8EAD445F576499FB7270AF3D71FFF87 }}
