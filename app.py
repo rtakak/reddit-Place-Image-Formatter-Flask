@@ -305,7 +305,8 @@ def place(
         imageio.mimsave(f"./{direct[0]}/pixel_{name[-1]}", frames, duration=int(1000/fps))
     else:
         original = cv2.imread(image_path)
-        pixel = pixelate(original, width_size, color_n)
+        blur = cv2.GaussianBlur(original,(5,5),0)
+        pixel = pixelate(blur, width_size, color_n)
         output = pixel.copy()
 
         palette, palette_visual = dict_palette(bgr_colors, color_names)
